@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrar Horario</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Borrar Horario</h3>
+        <p>¿Está seguro de que desea borrar el horario de <strong th:text="${horario.instalacion.nombre}"></strong> con hora de inicio <strong th:text="${horario.horaInicio}"></strong> y hora de fin <strong th:text="${horario.horaFin}"></strong>?</p>
+
+        <form method="post" th:action="@{/horario/del/{id}(id=${horario.id})}">
+            <button type="submit" class="btn btn-danger">Borrar</button>
+            <a th:href="@{/horario}" class="btn btn-secondary">Cancelar</a>
+        </form>
+
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+
+</html>

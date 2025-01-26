@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <title th:text="${titulo}">Lista de Reservas</title>
+</head>
+<body>
+<div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+
+<div class="container">
+    <h2 th:text="${titulo}">Lista de Reservas</h2>
+
+    <!-- Filtros -->
+    <form method="get" action="/admin/reservas">
+        <label for="usuarioId">Filtrar por usuario:</label>
+        <select name="usuarioId" id="usuarioId" class="form-select">
+            <option value="">Todos</option>
+            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
+        </select>
+        
+        <label for="instalacionId">Filtrar por instalación:</label>
+        <select name="instalacionId" id="instalacionId" class="form-select">
+            <option value="">Todas</option>
+            <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"></option>
+        </select>
+        
+        <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
+    </form>
+    
+    <!-- Tabla de reservas -->
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Horario</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="reserva : ${reservas.content}">
+                <td th:text="${reserva.id}"></td>
+                <td th:text="${reserva.usuario.username}"></td>
+                <td th:text="${reserva.horario.horaInicio + ' - ' + reserva.horario.horaFin}"></td>
+                <td th:text="${reserva.fecha}"></td>
+                <td>
+                    <a th:href="@{/admin/reservas/edit/{id}(id=${reserva.id})}" class="btn btn-success">Editar</a>
+                    <a th:href="@{/admin/reservas/delete/{id}(id=${reserva.id})}" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+        
+    </table>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${reservas.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number - 1})}">Anterior</a>
+            </li>
+            <li class="page-item" th:each="page : ${#numbers.sequence(0, reservas.totalPages - 1)}"
+                th:classappend="${page == reservas.number} ? 'active'">
+                <a class="page-link" th:href="@{/admin/reservas(page=${page})}" th:text="${page + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${reservas.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number + 1})}">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+</body>
+</html>

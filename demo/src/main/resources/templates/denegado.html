@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <title>403 - Acceso Denegado</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+
+        <div class="text-center mt-5">
+            <h1 class="display-4 text-danger">403 - Acceso Denegado</h1>
+            <p class="lead">No tienes permisos para acceder a esta página.</p>
+            <a th:href="@{/login}" class="btn btn-primary mt-3">Volver al login</a>
+        </div>
+
+        <div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+    </div>
+</body>
+</html>

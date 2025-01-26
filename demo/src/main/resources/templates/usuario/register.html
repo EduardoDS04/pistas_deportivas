@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro de Usuario</title>
+    <head th:replace="~{plantilla/fragmentos.html :: headfiles}"></head>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">Formulario de Registro</h1>
+                <form th:action="@{/register}" method="post" th:object="${usuario}" class="border p-4 rounded bg-light shadow-sm">
+                    <!-- Campo Username -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre:</label>
+                        <input id="username" type="text" th:field="*{username}" class="form-control" placeholder="Ingrese su nombre de usuario" required>
+                    </div>
+                    <!-- Campo Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input id="email" type="email" th:field="*{email}" class="form-control" placeholder="Ingrese su correo electrónico" required>
+                    </div>
+                    <!-- Campo Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input id="password" type="password" th:field="*{password}" class="form-control" placeholder="Ingrese su contraseña" required>
+                    </div>
+                    <!-- Selección de Rol -->
+                    <div class="mb-3">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select id="rol" name="tipo" class="form-control" th:field="*{tipo}" required>
+                            <option value="USUARIO">Usuario</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="OPERARIO">Operario</option>
+                        </select>
+                    </div>
+                    <!-- Botón de Enviar -->
+                    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

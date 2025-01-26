@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Horarios</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <h3>Lista de Horarios</h3>
+
+        <!-- Filtro para seleccionar una instalación -->
+        <form id="horarioForm" method="get">
+            <label for="instalacion">Seleccione una instalación para filtrar horarios:</label>
+            <select id="instalacion" class="form-select">
+                <option value="-1">Todas las instalaciones</option>
+                <option th:each="inst : ${instalaciones}" 
+                        th:value="${inst.id}" 
+                        th:text="${inst.nombre}" 
+                        th:selected="${instalacion} != null ? 
+                                      (${instalacion.id} == ${inst.id} ? 'selected' : 'false') : 
+                                      'false'">
+                </option>
+            </select>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Instalación</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="horario : ${horarios}">
+                    <td th:text="${horario.id}">ID</td>
+                    <td th:text="${horario.instalacion.nombre}">Nombre</td>
+                    <td th:text="${horario.horaInicio}">Inicio</td>
+                    <td th:text="${horario.horaFin}">Fin</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/horario/edit/{id}(id=${horario.id})}">Editar</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" th:href="@{/horario/del/{id}(id=${horario.id})}">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <div>
+            <p>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a th:if="${instalacion} == null" class="page-link"
+                               th:href="${page.hasPrevious()} ? |/horario?page=${page.number -1}| : '#'">
+                                <i class="fa-solid fa-chevron-left"></i> Anterior
+                            </a>
+                            <a th:unless="${instalacion} == null" class="page-link"
+                               th:href="${page.hasPrevious()} ? |/horario/filtrar/${instalacion.id}?page=${page.number -1}| : '#'">
+                                <i class="fa-solid fa-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link active"
+                                th:text="|Estás en la página ${page.number+1} de ${page.totalPages}|" href="#">1</a></li>
+                        <li class="page-item">
+                            <a th:if="${instalacion} == null" class="page-link"
+                               th:href="${page.hasNext()} ? |/horario?page=${page.number +1}| : '#'">
+                                Siguiente <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                            <a th:unless="${instalacion} == null" class="page-link"
+                               th:href="${page.hasNext()} ? |/horario/filtrar/${instalacion.id}?page=${page.number +1}| : '#'">
+                                Siguiente <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </p>
+        </div>
+
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+
+<script>
+    // Filtro para redirigir según la instalación seleccionada
+    document.getElementById("instalacion").addEventListener("change", () => {
+        const instalacionID = document.getElementById("instalacion").value;
+        const formulario = document.getElementById("horarioForm");
+        if (instalacionID == -1) {
+            formulario.setAttribute("action", "/horario");
+        } else {
+            formulario.setAttribute("action", "/horario/filtrar/" + instalacionID);
+        }
+        formulario.submit();
+    });
+</script>
+
+</html>

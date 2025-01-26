@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS deporte;
+
+USE deporte;
+
+CREATE TABLE usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(80) NOT NULL,
+    email VARCHAR(80) NOT NULL UNIQUE,
+    enabled BOOLEAN NOT NULL,
+    tipo VARCHAR(10) NOT NULL
+);

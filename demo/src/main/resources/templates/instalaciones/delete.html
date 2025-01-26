@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrar Instalación</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <h3>Borrar Instalación</h3>
+        <p>¿Estás seguro de que deseas borrar la instalación <strong th:text="${instalacion.nombre}"></strong>?</p>
+        <form method="post" th:action="@{/instalaciones/del/{id}(id=${instalacion.id})}">
+            <button type="submit" class="btn btn-danger">Borrar</button>
+            <a th:href="@{/instalaciones}" class="btn btn-secondary">Cancelar</a>
+        </form>        
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+</html>

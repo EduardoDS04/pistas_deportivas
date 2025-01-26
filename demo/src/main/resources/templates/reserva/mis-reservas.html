@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}"></head>
+<body>
+<div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+
+<div class="container">
+    <h2>Mis Reservas</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Horario</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.id}"></td>
+                <td th:text="${reserva.horario.descripcion}"></td>
+                <td th:text="${reserva.fecha}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+</body>
+</html>

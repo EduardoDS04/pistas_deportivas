@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}"></head>
+<body>
+<div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+
+<div class="container">
+    <h2>Nueva Reserva</h2>
+    <form method="post" th:action="@{/admin/reservas/add}" th:object="${reserva}">
+        <div class="mb-3">
+            <label for="instalacion" class="form-label">Instalación</label>
+            <select name="instalacion" id="instalacion" class="form-select">
+                <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="horario" class="form-label">Horario</label>
+            <select name="horario" id="horario" class="form-select">
+                <option value="">Seleccione una instalación primero</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="fecha" class="form-label">Fecha</label>
+            <input type="date" id="fecha" name="fecha" class="form-control" th:field="*{fecha}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/admin/reservas}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+<div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+
+<script>
+    document.getElementById('instalacion').addEventListener('change', function () {
+        const instalacionId = this.value;
+        const horarioSelect = document.getElementById('horario');
+        horarioSelect.innerHTML = '<option>Cargando horarios...</option>';
+
+        fetch(`/admin/reservas/horarios/${instalacionId}`)
+            .then(response => response.json())
+            .then(data => {
+                horarioSelect.innerHTML = '';
+                data.forEach(horario => {
+                    const option = document.createElement('option');
+                    option.value = horario.id;
+                    option.textContent = horario.descripcion;
+                    horarioSelect.appendChild(option);
+                });
+            })
+            .catch(() => {
+                horarioSelect.innerHTML = '<option>Error al cargar horarios</option>';
+            });
+    });
+</script>
+</body>
+</html>

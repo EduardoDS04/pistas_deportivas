@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="plantilla/fragmentos.html :: headfiles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Instalaciones</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+        <h3>Lista de Instalaciones</h3>
+
+        <!-- Filtro para seleccionar instalaciones -->
+        <form id="instalacionForm" method="get">
+            <label for="instalacion">Seleccione una instalación:</label>
+            <select id="instalacion" class="form-select">
+                <option value="-1">Todas las instalaciones</option>
+                <option th:each="inst : ${instalaciones}" 
+                        th:value="${inst.id}" 
+                        th:text="${inst.nombre}" 
+                        th:selected="${instalacion} != null ? 
+                                      (${instalacion.id} == ${inst.id} ? 'selected' : 'false') : 
+                                      'false'">
+                </option>
+            </select>
+        </form>
+
+        <!-- Botón para agregar instalación -->
+        <a class="btn btn-primary" th:href="@{/instalaciones/add}">Agregar Nueva Instalación</a>
+
+        <!-- Tabla de instalaciones -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="instalacion : ${instalaciones}">
+                    <td th:text="${instalacion.id}">ID</td>
+                    <td th:text="${instalacion.nombre}">Nombre</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/instalaciones/edit/{id}(id=${instalacion.id})}">Editar</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" th:href="@{/instalaciones/del/{id}(id=${instalacion.id})}">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+
+<script>
+    // Filtro para redirigir según la instalación seleccionada
+    $("#instalacion").change(() => {
+        let instalacionID = $("#instalacion").val();
+        let formulario = $("#instalacionForm");
+        if (instalacionID == -1) {
+            formulario.attr("action", "/instalaciones");
+        } else {
+            formulario.attr("action", "/instalaciones/filtrar/" + instalacionID);
+        }
+        formulario.submit();
+    });
+</script>
+
+</html>

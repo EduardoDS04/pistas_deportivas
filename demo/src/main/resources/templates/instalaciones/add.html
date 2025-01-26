@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Instalación</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3>Agregar una nueva instalación deportiva</h3>
+
+        <form method="post" th:action="@{/instalaciones/add}" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" 
+                       id="nombre" 
+                       name="nombre" 
+                       class="form-control" 
+                       placeholder="Escribe el nombre de la instalación" 
+                       required />
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/instalaciones}" class="btn btn-secondary">Cancelar</a>
+        </form>
+
+        <div th:replace="plantilla/fragmentos.html ::footer"></div>
+    </div>
+</body>
+</html>

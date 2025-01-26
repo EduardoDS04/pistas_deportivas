@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Horario</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="plantilla/fragmentos.html :: navigation"></div>
+
+        <h3 th:text="'Editar Horario: ' + ${horario.id}"></h3>
+
+        <form method="post" th:action="@{/horario/edit/{id}(id=${horario.id})}" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="horaInicio" class="form-label">Hora Inicio</label>
+                <input type="time" id="horaInicio" name="horaInicio" class="form-control" th:value="${horario.horaInicio}" required>
+            </div>
+            <div class="mb-3">
+                <label for="horaFin" class="form-label">Hora Fin</label>
+                <input type="time" id="horaFin" name="horaFin" class="form-control" th:value="${horario.horaFin}" required>
+            </div>
+            <div class="mb-3">
+                <label for="instalacion" class="form-label">Instalación</label>
+                <select id="instalacion" name="instalacion.id" class="form-control" required>
+                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}" 
+                            th:selected="${horario.instalacion?.id} == ${instalacion.id}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/horario}" class="btn btn-secondary">Cancelar</a>
+        </form>
+
+        <div th:replace="plantilla/fragmentos.html :: footer"></div>
+    </div>
+</body>
+</html>
