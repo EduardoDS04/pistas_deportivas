@@ -7,9 +7,9 @@
 <div class="container">
     <h2>Eliminar Reserva</h2>
     <p>¿Está seguro de que desea eliminar la reserva?</p>
-    <form method="post" th:action="@{/admin/reservas/delete/{id}(id=${reserva.id})}">
+    <form method="post" th:action="@{/mis-datos/eliminar/{id}(id=${reserva.id})}">
         <button type="submit" class="btn btn-danger">Eliminar</button>
-        <a th:href="@{/admin/reservas}" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/mis-datos/mis-reservas}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 

@@ -1,25 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head th:replace="~{plantilla/fragmentos.html :: headfiles}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realizar Reserva</title>
+    <title>Crear Reserva - Admin</title>
 </head>
 <body>
     <div class="container-fluid">
         <div th:replace="plantilla/fragmentos.html :: navigation"></div>
-        <h3>Realizar Reserva</h3>
+        <h3>Crear Nueva Reserva</h3>
+        
+        <!-- Mensajes de error o exito-->
         <div th:if="${error}" class="alert alert-danger">
             <p th:text="${error}"></p>
         </div>
+        <div th:if="${success}" class="alert alert-success">
+            <p th:text="${success}"></p>
+        </div>
         
-        <form method="post" th:object="${reserva}" action="/mis-datos/add">
+        <form method="post" th:object="${reserva}" action="/admin/reservas/add">
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Usuario</label>
+                <select id="usuario" name="usuario" class="form-select" th:field="*{usuario}" required>
+                    <option value="" disabled selected>Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" 
+                            th:text="${usuario.username}">
+                    </option>
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label for="instalacion" class="form-label">Instalación</label>
                 <select id="instalacion" name="instalacion" class="form-select" onchange="actualizarHorarios()" required>
                     <option value="" disabled selected>Seleccione una instalación</option>
-                    <option th:each="instalacion : ${instalaciones}"
-                            th:value="${instalacion.id}"
+                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" 
                             th:text="${instalacion.nombre}">
                     </option>
                 </select>
@@ -27,11 +41,10 @@
             
             <div class="mb-3">
                 <label for="horario" class="form-label">Horario</label>
-                <select id="horario" name="horario" class="form-select" required>
+                <select id="horario" name="horario" class="form-select" th:field="*{horario}" required>
                     <option value="" disabled selected>Seleccione un horario</option>
-                    <option th:each="horario : ${horarios}"
-                            th:value="${horario.id}"
-                            th:text="${horario.horaInicio + ' - ' + horario.horaFin}"
+                    <option th:each="horario : ${horarios}" th:value="${horario.id}" 
+                            th:text="${horario.horaInicio + ' - ' + horario.horaFin}" 
                             th:attr="data-instalacion=${horario.instalacion.id}" style="display: none;">
                     </option>
                 </select>
@@ -39,10 +52,11 @@
             
             <div class="mb-3">
                 <label for="fecha" class="form-label">Fecha</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" required />
+                <input type="date" id="fecha" name="fecha" class="form-control" th:field="*{fecha}" required />
             </div>
             
             <button type="submit" class="btn btn-primary">Guardar Reserva</button>
+            <a th:href="@{/admin/reservas}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
     
@@ -61,6 +75,7 @@
                 }
             });
         
+            // Limpiar el horario seleccionado al cambiar la instalación
             document.getElementById("horario").value = "";
         }
     </script>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <title>Eliminar Reserva</title>
+</head>
+<body>
+    <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+    
+    <div class="container mt-4">
+        <h2>Eliminar Reserva</h2>
+        <p>¿Está seguro de que desea eliminar la reserva con ID: <strong th:text="${reserva.id}"></strong>?</p>
+        
+        <form th:action="@{/admin/reservas/delete/{id}(id=${reserva.id})}" method="post">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a th:href="@{/admin/reservas}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+    
+    <div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+</body>
+</html>

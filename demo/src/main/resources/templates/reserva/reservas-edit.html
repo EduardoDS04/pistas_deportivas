@@ -6,19 +6,19 @@
 
 <div class="container">
     <h2>Editar Reserva</h2>
-    <form method="post" th:action="@{/admin/reservas/edit/{id}(id=${reserva.id})}" th:object="${reserva}">
+    <form method="post" th:action="@{/mis-datos/editar/{id}(id=${reserva.id})}" th:object="${reserva}">
         <div class="mb-3">
             <label for="instalacion" class="form-label">Instalación</label>
             <select name="instalacion" id="instalacion" class="form-select" th:field="*{instalacion}">
-                <option th:each="instalacion : ${instalaciones}" th:value="${instalacion}" th:text="${instalacion.nombre}"
-                        th:selected="${instalacion == reserva.instalacion}"></option>
+                <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"
+                        th:selected="${instalacion.id == reserva.instalacion.id}"></option>
             </select>
         </div>
         <div class="mb-3">
             <label for="horario" class="form-label">Horario</label>
             <select name="horario" id="horario" class="form-select" th:field="*{horario}">
-                <option th:each="horario : ${horarios}" th:value="${horario}" th:text="${horario.descripcion}"
-                        th:selected="${horario == reserva.horario}"></option>
+                <option th:each="horario : ${horarios}" th:value="${horario.id}" th:text="${horario.horaInicio + ' - ' + horario.horaFin}"
+                        th:selected="${horario.id == reserva.horario.id}"></option>
             </select>
         </div>
         <div class="mb-3">
@@ -26,7 +26,7 @@
             <input type="date" id="fecha" name="fecha" class="form-control" th:field="*{fecha}" />
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/admin/reservas}" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/mis-datos/mis-reservas}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 

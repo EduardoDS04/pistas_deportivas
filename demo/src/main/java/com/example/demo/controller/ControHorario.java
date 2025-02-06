@@ -15,6 +15,7 @@ import com.example.demo.modelo.Horario;
 import com.example.demo.modelo.Instalacion;
 import com.example.demo.repositorio.RepoHorario;
 import com.example.demo.repositorio.RepoInstalacion;
+import com.example.demo.repositorio.RepoReserva;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +28,9 @@ public class ControHorario {
     
     @Autowired 
     RepoHorario repoHorario;
+
+    @Autowired
+    RepoReserva repoReserva;
 
     @Autowired
     RepoInstalacion repoInstalacion;
@@ -102,7 +106,6 @@ public String editHorario(@PathVariable @NonNull Long id, Model modelo) {
         }
     }
 
-   // Formulario para mostrar confirmación de borrar un horario
 @GetMapping("/del/{id}")
 public String showDeleteForm(@PathVariable @NonNull Long id, Model modelo) {
     Optional<Horario> oHorario = repoHorario.findById(id);
@@ -120,14 +123,22 @@ public String showDeleteForm(@PathVariable @NonNull Long id, Model modelo) {
 
 @PostMapping("/del/{id}")
 public String delHorario(@PathVariable Long id, Model model) {
-    if (repoHorario.existsById(id)) {
-        repoHorario.deleteById(id);
-        return "redirect:/horario"; // Redirige a la lista de horarios tras el borrado
+    Optional<Horario> horarioOpt = repoHorario.findById(id);
+    if (horarioOpt.isPresent()) {
+        Horario horario = horarioOpt.get();
+        // Verifica si existen reservas para este horario
+        if (repoReserva.existsByHorario(horario)) {
+            model.addAttribute("mensaje", "Este horario está asociado a una reserva y no se puede eliminar.");
+            return "/error";
+        }
+        repoHorario.deleteById(id);  // Eliminar solo el horario
+        return "redirect:/horario"; 
     } else {
         model.addAttribute("mensaje", "El horario no existe o no se puede eliminar.");
         return "/error";
     }
 }
+
 
 
 }

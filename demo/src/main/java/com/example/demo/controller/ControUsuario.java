@@ -37,16 +37,9 @@ public String registrarUsuario(@ModelAttribute Usuario usuario, RedirectAttribut
         redirectAttributes.addFlashAttribute("error", "El nombre de usuario ya está en uso.");
         return "redirect:/register";
     }
-
-    // Encriptar la contraseña
     usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-
-    // Habilitar el usuario
     usuario.setEnabled(true);
-
-    // Guardar en la base de datos
     repoUsuario.save(usuario);
-
     redirectAttributes.addFlashAttribute("success", "Usuario registrado con éxito. Ahora puede iniciar sesión.");
     return "redirect:/login";
 }

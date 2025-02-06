@@ -22,8 +22,6 @@ public class Horario {
     private LocalTime horaInicio;
 
     private LocalTime horaFin;
-
-    // Constructor adicional para inicialización fácil (opcional)
     public Horario(Instalacion instalacion, LocalTime horaInicio, LocalTime horaFin) {
         this.instalacion = instalacion;
         this.horaInicio = horaInicio;

@@ -17,10 +17,10 @@ public class Instalacion {
 
     private String nombre;
 
-    @OneToMany(mappedBy = "instalacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Horario> horarios;
+    @OneToMany(mappedBy = "instalacion", orphanRemoval = true)
+private List<Horario> horarios;
 
-    // Constructor adicional para inicialización fácil (opcional)
+
     public Instalacion(String nombre) {
         this.nombre = nombre;
     }

@@ -39,43 +39,19 @@ public class ConfiSec {
     public SecurityFilterChain filtro(HttpSecurity httpSec) throws Exception {
         return httpSec
             .authorizeHttpRequests((request) -> request
-                // Rutas públicas
-                .requestMatchers(
-                    "/register", "/webjars/**", "/img/**", "/login", "/logout", "/acerca", "/denegado")
-                    .permitAll()
-
-
-                // Acceso exclusivo para ADMIN
-                .requestMatchers("/**")
-                    .hasAuthority("ADMIN")
-
-                // Acceso compartido para ADMIN y OPERARIO
-                .requestMatchers("/admin/reservas/**")
-                    .hasAnyAuthority("ADMIN", "OPERARIO")
-
-                // Acceso autenticado para usuarios a sus datos personales y reservas
-                .requestMatchers("/mis-datos/**", "/mis-datos/mis-reservas/**")
-                    .authenticated())
-
-            // Manejo de excepciones de acceso denegado
-            .exceptionHandling((exception) -> exception
-                .accessDeniedPage("/denegado"))
-
-            // Configuración de login
-            .formLogin((formLogin) -> formLogin
-                .loginPage("/login")
-                .permitAll())
-            
-
-            // Configuración de logout
-            .logout((logout) -> logout
-                .invalidateHttpSession(true)
-                .logoutSuccessUrl("/")
-                .permitAll())
-
-            // Protección CSRF desactivada (puedes activarla según tus necesidades)
+                .requestMatchers("/register", "/webjars/**", "/img/**", "/login", "/logout", "/acerca", "/denegado", "/error")
+                    .permitAll() // Permite acceso a estas rutas para todos
+                .requestMatchers("/admin/**").hasAuthority("ADMIN") // Solo acceso a ADMIN 
+                .requestMatchers("/admin/reservas/**").hasAnyAuthority("ADMIN") // Acceso a ADMIN 
+                .requestMatchers("/mis-datos/**").hasAuthority("USUARIO") 
+                .requestMatchers("/**").authenticated() // Todas las rutas requieren autenticación
+            )
+            // Manejo de excepciones para denegar el acceso
+            .exceptionHandling((exception) -> exception.accessDeniedPage("/denegado"))
+            .formLogin((formLogin) -> formLogin.loginPage("/login").permitAll())
+            .logout((logout) -> logout.invalidateHttpSession(true).logoutSuccessUrl("/").permitAll())
+            // Protección CSRF desactivada
             .csrf((protection) -> protection.disable())
-
             .build();
     }
 }

@@ -136,11 +136,3 @@ INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (1,	2,	130,	'2019
 INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (2,	2,	130,	'2019-10-13');
 INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (4,	7,	120,	'2019-11-11');
 INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (5,	7,	130,	'2019-11-21');
-
-ALTER TABLE horario
-DROP FOREIGN KEY fk_horario_instalacion;
-
-ALTER TABLE horario
-ADD CONSTRAINT fk_horario_instalacion
-FOREIGN KEY (instalacion_id) REFERENCES instalacion(id)
-ON DELETE CASCADE;

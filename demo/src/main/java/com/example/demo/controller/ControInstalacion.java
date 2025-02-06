@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequestMapping("/instalaciones") // Ajuste para que coincida con el nombre de la carpeta
+@RequestMapping("/instalaciones") 
 public class ControInstalacion {
     
     @Autowired 
@@ -44,14 +44,14 @@ public String filtrarInstalaciones(@PathVariable Long id, Model model) {
     public String getInstalaciones(Model model) {
         List<Instalacion> instalaciones = repoInstalacion.findAll();
         model.addAttribute("instalaciones", instalaciones);
-        return "instalaciones/instalaciones"; // Ajuste a la vista correspondiente
+        return "instalaciones/instalaciones"; 
     }
 
     // Agregar una instalación
     @GetMapping("/add")
     public String addInstalacion(Model modelo) {
         modelo.addAttribute("instalacion", new Instalacion());
-        return "instalaciones/add"; // Ajuste a la vista correspondiente
+        return "instalaciones/add"; 
     }
 
     @PostMapping("/add")
@@ -70,7 +70,7 @@ public String filtrarInstalaciones(@PathVariable Long id, Model model) {
         Optional<Instalacion> oInstalacion = repoInstalacion.findById(id);
         if (oInstalacion.isPresent()) {
             modelo.addAttribute("instalacion", oInstalacion.get());
-            return "instalaciones/edit"; // Ajuste a la vista correspondiente
+            return "instalaciones/edit"; 
         } else {
             modelo.addAttribute("mensaje", "La instalación no existe");
             modelo.addAttribute("titulo", "Error editando instalación.");
@@ -94,18 +94,18 @@ public String confirmDelInstalacion(
     Optional<Instalacion> oInstalacion = repoInstalacion.findById(id);
     if (oInstalacion.isPresent()) {
         modelo.addAttribute("instalacion", oInstalacion.get());
-        return "instalaciones/delete"; // Ajuste a la vista correspondiente
+        return "instalaciones/delete"; 
     } else {
         modelo.addAttribute("mensaje", "La instalación no existe");
         modelo.addAttribute("titulo", "Error borrando instalación.");
         return "/error";
     }
 }
-
+    // Post para eliminar
     @PostMapping("/del/{id}")
 public String delInstalacion(@PathVariable Long id, Model modelo) {
     if (repoInstalacion.existsById(id)) {
-        repoInstalacion.deleteById(id); // La eliminación en cascada se encargará de los horarios
+        repoInstalacion.deleteById(id); 
     } else {
         modelo.addAttribute("mensaje", "La instalación no existe");
         modelo.addAttribute("titulo", "Error borrando instalación.");

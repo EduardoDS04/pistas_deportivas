@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <title th:text="${titulo}">Listado de Reservas</title>
+</head>
+<body>
+    <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+
+    <div class="container mt-4">
+        <h2 th:text="${titulo}">Listado de Reservas</h2>
+        
+        <!-- Formulario de filtro solo por usuario -->
+        <form id="horarioForm" method="get" action="/admin/reservas" class="mb-3">
+            <div class="row">
+                <div class="col">
+                    <label for="usuarioId" class="form-label">Filtrar por Usuario</label>
+                    <select name="usuarioId" id="usuarioId" class="form-select">
+                        <option value="">Todos</option>
+                        <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" 
+                                th:text="${usuario.username}" 
+                                th:selected="${usuario.id == usuarioId}"></option>
+                    </select>
+                </div>
+                <div class="col align-self-end">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensajes de éxito o error -->
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${success}"></span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Botón para agregar reserva -->
+        <div class="mb-3">
+            <a href="/admin/reservas/add" class="btn btn-primary">Crear Nueva Reserva</a>
+        </div>
+
+        <!-- Tabla de reservas -->
+        <table class="table table-striped" th:if="${reservas.content.size() > 0}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Instalación</th>
+                    <th>Horario</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="reserva : ${reservas.content}">
+                    <td th:text="${reserva.id}"></td>
+                    <td th:text="${reserva.usuario.username}"></td>
+                    <td th:text="${reserva.horario.instalacion.nombre}"></td>
+                    <td th:text="${reserva.horario.horaInicio + ' - ' + reserva.horario.horaFin}"></td>
+                    <td th:text="${reserva.fecha}"></td>
+                    <td>
+                        <a th:href="@{/admin/reservas/edit/{id}(id=${reserva.id})}" class="btn btn-success btn-sm">Editar</a>
+                        <a th:href="@{/admin/reservas/delete/{id}(id=${reserva.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Da un mensaje si no hay reservas -->
+        <div th:if="${reservas.content.size() == 0}" class="alert alert-info">
+            No hay reservas disponibles.
+        </div>
+
+        <!-- Paginación de reservas -->
+        <div>
+            <p>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <!-- Página anterior -->
+                        <li class="page-item" th:classappend="${reservas.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number - 1}, usuarioId=${usuarioId})}">
+                                <i class="fa-solid fa-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+
+                        <!-- Página actual -->
+                        <li class="page-item">
+                            <a class="page-link active" href="#">Estás en la página <span th:text="${reservas.number + 1}"></span> de <span th:text="${reservas.totalPages}"></span></a>
+                        </li>
+
+                        <!-- Página siguiente -->
+                        <li class="page-item" th:classappend="${reservas.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number + 1}, usuarioId=${usuarioId})}">
+                                Siguiente <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </p>
+        </div>
+    </div>
+
+    <div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+
+</body>
+</html>

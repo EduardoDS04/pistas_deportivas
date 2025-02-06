@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head th:fragment="headfiles">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +12,10 @@
     </style>
     <title>Gestión de pistas deportivas</title>
 </head>
-
 <body>
     <div class="container">
         <div th:fragment="navigation">
             <div class="d-flex">
-                <!-- Sidebar -->
                 <div class="bg-primary text-white vh-100" id="sidenav" style="width: 250px; display: none;">
                     <div class="p-3">
                         <h4 class="navbar-brand text-white">Gestión de Pistas Deportivas</h4>
@@ -48,7 +45,7 @@
                                 </ul>
                             </li>
                             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                <!-- MENÚ PARA RESERVAS -->
+                                <!-- MENÚ PARA RESERVAS (ADMIN) -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="reservasDropdown" data-bs-toggle="collapse" data-bs-target="#reservasMenu" aria-expanded="false">
                                     <i class="fa-solid fa-calendar-check"></i> | Reservas
                                 </a>
@@ -56,10 +53,16 @@
                                     <li><a class="nav-link text-white" href="/admin/reservas">Gestionar</a></li>
                                 </ul>
                             </li>
+                            <!-- RESERVAS PARA ROL USUARIO -->
+                            <li sec:authorize="hasAuthority('USUARIO')" class="nav-item">
+                                <a class="nav-link text-white" href="/mis-datos/add">
+                                    <i class="fa-solid fa-calendar-plus"></i> | Hacer una Reserva
+                                </a>
+                            </li>                            
                             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
                                 <!-- SOLO ADMIN -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="usuariosDropdown" data-bs-toggle="collapse" data-bs-target="#usuariosMenu" aria-expanded="false">
-                                    <i class="fa-solid fa-users"></i> |  Usuarios
+                                    <i class="fa-solid fa-users"></i> | Usuarios
                                 </a>
                                 <ul class="collapse list-unstyled ps-3" id="usuariosMenu">
                                     <li><a class="nav-link text-white" href="/usuario">Listar</a></li>
@@ -68,18 +71,18 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="ayudaDropdown" data-bs-toggle="collapse" data-bs-target="#ayudaMenu" aria-expanded="false">
-                                    <i class="fa-solid fa-info"></i> |  Ayuda
+                                    <i class="fa-solid fa-info"></i> | Ayuda
                                 </a>
                                 <ul class="collapse list-unstyled ps-3" id="ayudaMenu">
-                                    <li><a class="nav-link text-white" href="/acerca">
-                                        Acerca de...</a></li>
+                                    <li><a class="nav-link text-white" href="/acerca">Acerca de...</a></li>
                                     <li><a class="nav-link text-white" href="https://gitlab.iesvirgendelcarmen.com/juangu/spring-reservas-2023" target="_blank">
                                         Manual</a></li>
                                 </ul>
                             </li>
                             <li sec:authorize="isAuthenticated()" class="nav-item">
                                 <a class="nav-link text-white" href="/logout">
-                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> |  Logout</a>
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> | Logout
+                                </a>
                             </li>                    
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="/mis-datos">
@@ -91,8 +94,6 @@
                         </ul>
                     </div>
                 </div>
-            
-                <!-- Main Content -->
                 <div class="flex-grow-1">
                     <nav class="navbar navbar-light bg-light">
                         <div class="container-fluid">
@@ -118,7 +119,8 @@
             <h5>© 2024 IES Virgen del Carmen</h5>
             <p>Entró en el sistema como:
                 <span th:text="${#authentication.name}"></span>
-                (<span th:text="${#authentication.authorities[0]}"></span>)</p>
+                (<span th:text="${#authentication.authorities[0]}"></span>)
+            </p>
             <p sec:authorize="hasAuthority('ADMIN')">
                 <b>Entró en el sistema como admin</b>
             </p>
@@ -128,5 +130,4 @@
         <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
     </div>
 </body>
-
 </html>

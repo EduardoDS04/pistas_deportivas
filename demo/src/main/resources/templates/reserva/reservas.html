@@ -9,18 +9,20 @@
 <div class="container">
     <h2 th:text="${titulo}">Lista de Reservas</h2>
 
-    <!-- Filtros -->
+    <!-- Filtramos -->
     <form method="get" action="/admin/reservas">
         <label for="usuarioId">Filtrar por usuario:</label>
         <select name="usuarioId" id="usuarioId" class="form-select">
             <option value="">Todos</option>
-            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
+            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"
+                    th:selected="${usuario.id == usuarioId}"></option>
         </select>
         
         <label for="instalacionId">Filtrar por instalación:</label>
         <select name="instalacionId" id="instalacionId" class="form-select">
             <option value="">Todas</option>
-            <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"></option>
+            <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}"
+                    th:selected="${instalacion.id == instalacionId}"></option>
         </select>
         
         <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
@@ -32,6 +34,7 @@
             <tr>
                 <th>ID</th>
                 <th>Usuario</th>
+                <th>Instalación</th>
                 <th>Horario</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
@@ -41,6 +44,7 @@
             <tr th:each="reserva : ${reservas.content}">
                 <td th:text="${reserva.id}"></td>
                 <td th:text="${reserva.usuario.username}"></td>
+                <td th:text="${reserva.horario.instalacion.nombre}"></td>
                 <td th:text="${reserva.horario.horaInicio + ' - ' + reserva.horario.horaFin}"></td>
                 <td th:text="${reserva.fecha}"></td>
                 <td>
@@ -49,7 +53,6 @@
                 </td>
             </tr>
         </tbody>
-        
     </table>
 
     <!-- Paginación -->

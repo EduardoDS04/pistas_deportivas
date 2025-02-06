@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantilla/fragmentos.html :: headfiles}">
+    <title>Eliminar Usuario</title>
+</head>
+<body>
+<div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+<div class="container mt-4">
+    <h2>Eliminar Usuario</h2>
+    <p>¿Está seguro de que desea eliminar al usuario <strong th:text="${usuario.username}"></strong>?</p>
+    <form th:action="@{/usuario/delete/{id}(id=${usuario.id})}" method="post">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a th:href="@{/usuario}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+<div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+</body>
+</html>

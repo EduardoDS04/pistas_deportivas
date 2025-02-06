@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface RepoUsuario extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
-    List<Usuario> findByTipo(Rol tipo); // Filtrar usuarios por rol
+    List<Usuario> findByTipo(Rol tipo); // Filtramos usuarios por rol
 }

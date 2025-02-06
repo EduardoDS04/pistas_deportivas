@@ -16,13 +16,10 @@ import com.example.demo.modelo.Instalacion;
 public interface RepoHorario extends JpaRepository<Horario,Integer> {
 
     Page<Horario> findByInstalacion(Instalacion instalacion, Pageable pageable);
-
     Optional<Horario> findById(Long id);
-
     List<Horario> findByInstalacionId(Long instalacionId);
-
+    List<Horario> findByInstalacion(Instalacion instalacion);
     boolean existsById(Long id);
-
     void deleteById(Long id);
     
 }

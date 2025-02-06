@@ -15,9 +15,11 @@
         <p>¿Está seguro de que desea borrar el horario de <strong th:text="${horario.instalacion.nombre}"></strong> con hora de inicio <strong th:text="${horario.horaInicio}"></strong> y hora de fin <strong th:text="${horario.horaFin}"></strong>?</p>
 
         <form method="post" th:action="@{/horario/del/{id}(id=${horario.id})}">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-danger">Borrar</button>
             <a th:href="@{/horario}" class="btn btn-secondary">Cancelar</a>
         </form>
+        
 
         <div th:replace="plantilla/fragmentos.html :: footer"></div>
     </div>

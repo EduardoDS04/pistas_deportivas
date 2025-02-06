@@ -1,29 +1,70 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{plantilla/fragmentos.html :: headfiles}"></head>
 <body>
-<div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
+    <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
 
-<div class="container">
-    <h2>Mis Reservas</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Horario</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="reserva : ${reservas}">
-                <td th:text="${reserva.id}"></td>
-                <td th:text="${reserva.horario.descripcion}"></td>
-                <td th:text="${reserva.fecha}"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="container">
+        <h2 th:text="${titulo}">Mis Reservas</h2>
+        
+        <!-- muestra un mensaje de que se ha realizado la reserva -->
+        <div th:if="${mensaje}" class="alert alert-success" role="alert">
+            <span th:text="${mensaje}"></span>
+        </div>
+        
+        <!-- muestra un mensaje si no hay reservas -->
+        <div th:if="${reservas.isEmpty()}">
+            <p class="alert alert-info">No tienes reservas activas.</p>
+        </div>
 
-<div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
+        <!-- Tabla de reservas -->
+        <table class="table table-striped mt-3" th:if="${not reservas.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Instalación</th>
+                    <th>Horario</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="reserva : ${reservas.content}">
+                    <td th:text="${reserva.id}"></td>
+                    <td th:text="${reserva.horario.instalacion.nombre}"></td>
+                    <td th:text="${reserva.horario.horaInicio + ' - ' + reserva.horario.horaFin}"></td>
+                    <td th:text="${reserva.fecha}"></td>
+                    <td>
+                        <!-- Utilizamos #authentication.name que comparar el usuario autenticado -->
+                        <a th:if="${reserva.usuario.username == #authentication.name}" 
+                           th:href="@{/mis-datos/editar/{id}(id=${reserva.id})}" 
+                           class="btn btn-success">Editar</a>
+                        <a th:if="${reserva.usuario.username == #authentication.name}" 
+                           th:href="@{/mis-datos/eliminar/{id}(id=${reserva.id})}" 
+                           class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <nav th:if="${reservas.totalPages > 1}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${reservas.hasPrevious()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${reservas.number - 1})}">Anterior</a>
+                </li>
+                <li class="page-item" 
+                    th:each="page : ${#numbers.sequence(0, reservas.totalPages - 1)}"
+                    th:classappend="${page == reservas.number} ? 'active'">
+                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${page})}" th:text="${page + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${reservas.hasNext()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${reservas.number + 1})}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
 </body>
 </html>
