@@ -117,82 +117,77 @@ public class ControReserva {
         return "redirect:/admin/reservas";
     }
 
-    // formulario de edición
-@GetMapping("/edit/{id}")
-public String editReserva(@PathVariable @NonNull Long id, Model modelo) {
-    Optional<Reserva> oReserva = repoReserva.findById(id);
-    if (oReserva.isPresent()) {
-        Reserva reserva = oReserva.get();
-
-        List<Instalacion> instalaciones = repoInstalacion.findAll();
-        List<Horario> horarios = repoHorario.findAll();
-        List<Usuario> usuarios = repoUsuario.findAll();
-
-        modelo.addAttribute("instalaciones", instalaciones);
-        modelo.addAttribute("horarios", horarios);
-        modelo.addAttribute("usuarios", usuarios);
-        modelo.addAttribute("reserva", reserva);
-
-        return "reserva-admin/reservas-edit";
-
-    } else {
-        modelo.addAttribute("mensaje", "La reserva no existe");
-        modelo.addAttribute("titulo", "Error editando reserva.");
-        return "error";
+    @GetMapping("/edit/{id}")
+    public String editReserva(@PathVariable Long id, Model modelo) {
+        // Cargar la reserva sin validaciones adicionales
+        Optional<Reserva> oReserva = repoReserva.findById(id);
+        
+        if (oReserva.isPresent()) {
+            Reserva reserva = oReserva.get();
+            
+            // Cargar las listas de instalaciones, horarios y usuarios sin validaciones
+            List<Instalacion> instalaciones = repoInstalacion.findAll();
+            List<Horario> horarios = repoHorario.findAll();
+            List<Usuario> usuarios = repoUsuario.findAll();
+            
+            modelo.addAttribute("instalaciones", instalaciones);
+            modelo.addAttribute("horarios", horarios);
+            modelo.addAttribute("usuarios", usuarios);
+            modelo.addAttribute("reserva", reserva);
+            
+            return "reserva-admin/reservas-edit"; // Vista de edición
+        } else {
+            modelo.addAttribute("mensaje", "La reserva no existe");
+            return "error"; // En caso de que la reserva no exista
+        }
     }
-}
+    
+    
+    
 
-    // edición de la reserva
     @PostMapping("/edit/{id}")
-    public String editReserva(@PathVariable("id") Long id,
-                              @ModelAttribute("reserva") Reserva reserva,
-                              RedirectAttributes redirectAttributes) {
-        LocalDate fechaActual = LocalDate.now();
+public String editReserva(@PathVariable Long id, @ModelAttribute("reserva") Reserva reserva, RedirectAttributes redirectAttributes) {
+    LocalDate fechaActual = LocalDate.now();
 
-        // Verificar que la reserva exista
-        Optional<Reserva> reservaOpt = repoReserva.findById(id);
-        if (reservaOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "La reserva no existe.");
-            return "redirect:/admin/reservas";
-        }
-
-        // Validar si la fecha ya pasó o es el día actual
-        if (!reserva.getFecha().isAfter(fechaActual)) {
-            redirectAttributes.addFlashAttribute("error",
-                "No se puede actualizar reservas que ya han pasado o están programadas para hoy.");
-            return "redirect:/admin/reservas/edit/" + id;
-        }
-
-        // Validar si el usuario ya tiene una reserva en esa fecha
-        boolean existeReserva = repoReserva.existsByUsuarioAndFecha(reserva.getUsuario(), reserva.getFecha());
-   
-        if (existeReserva && !reservaOpt.get().getId().equals(reserva.getId())) {
-            redirectAttributes.addFlashAttribute("error",
-                "El usuario " + reserva.getUsuario().getUsername() +
-                " ya tiene una reserva en la fecha " + reserva.getFecha());
-            return "redirect:/admin/reservas/edit/" + id;
-        }
-
-        // Validar si la fecha no sobrepasa las 2 semanas
-        LocalDate fechaLimite = fechaActual.plusWeeks(2);
-        if (reserva.getFecha().isAfter(fechaLimite)) {
-            redirectAttributes.addFlashAttribute("error",
-                "No se puede reservar con más de dos semanas de antelación.");
-            return "redirect:/admin/reservas/edit/" + id;
-        }
-
-        // Actualizar la reserva original
-        Reserva reservaOriginal = reservaOpt.get();
-        reservaOriginal.setFecha(reserva.getFecha());
-        reservaOriginal.setInstalacion(reserva.getInstalacion());
-        reservaOriginal.setHorario(reserva.getHorario());
-        reservaOriginal.setUsuario(reserva.getUsuario());
-
-        // Guardamos
-        repoReserva.save(reservaOriginal);
-        redirectAttributes.addFlashAttribute("mensaje", "Reserva actualizada con éxito.");
+    // Verificar existencia de la reserva
+    Optional<Reserva> reservaOpt = repoReserva.findById(id);
+    if (reservaOpt.isEmpty()) {
+        redirectAttributes.addFlashAttribute("error", "La reserva no existe.");
         return "redirect:/admin/reservas";
     }
+
+    // Validar que la fecha de la reserva sea posterior a hoy
+    if (!reserva.getFecha().isAfter(fechaActual)) {
+        redirectAttributes.addFlashAttribute("error", "La fecha debe ser posterior a hoy.");
+        return "redirect:/admin/reservas/edit/" + id;
+    }
+
+    // Validar que la fecha no sea más de dos semanas en el futuro
+    if (reserva.getFecha().isAfter(fechaActual.plusWeeks(2))) {
+        redirectAttributes.addFlashAttribute("error", "La fecha no puede ser más de dos semanas en el futuro.");
+        return "redirect:/admin/reservas/edit/" + id;
+    }
+
+    // Validar que el usuario no tenga otra reserva en la misma fecha
+    if (repoReserva.existsByUsuarioAndFecha(reserva.getUsuario(), reserva.getFecha()) && !reservaOpt.get().getId().equals(reserva.getId())) {
+        redirectAttributes.addFlashAttribute("error", "El usuario ya tiene una reserva en esa fecha.");
+        return "redirect:/admin/reservas/edit/" + id;
+    }
+
+    // Actualizar la reserva
+    Reserva reservaOriginal = reservaOpt.get();
+    reservaOriginal.setFecha(reserva.getFecha());
+    reservaOriginal.setInstalacion(reserva.getInstalacion());
+    reservaOriginal.setHorario(reserva.getHorario());
+    reservaOriginal.setUsuario(reserva.getUsuario());
+
+    // Guardar los cambios
+    repoReserva.save(reservaOriginal);
+    redirectAttributes.addFlashAttribute("mensaje", "Reserva actualizada con éxito.");
+    return "redirect:/admin/reservas";
+}
+
+
 
     // Mostrar confirmación de eliminación de una reserva 
     @GetMapping("/delete/{id}")

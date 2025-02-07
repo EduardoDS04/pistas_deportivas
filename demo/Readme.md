@@ -11,6 +11,38 @@ Este proyecto es una aplicación web desarrollada con **Spring Boot** y **MySQL*
 - **Thymeleaf** para el renderizado en el frontend.
 - **Spring Security** para autenticación y autorización.
 
+# 📷 Capturas de Pantalla del Proyecto
+
+Este documento contiene capturas de pantalla del sistema.
+
+## 🖼️ Capturas del Proyecto
+
+### Captura 1
+![Captura 1](img/Captura1.PNG)
+
+### Captura 2
+![Captura 2](img/Captura2.PNG)
+
+### Captura 3
+![Captura 3](img/Captura3.PNG)
+
+### Captura 4
+![Captura 4](img/Captura4.PNG)
+
+### Captura 5
+![Captura 5](img/Captura5.PNG)
+
+### Captura 6
+![Captura 6](img/Captura6.PNG)
+
+### Captura 7
+![Captura 7](img/Captura7.PNG)
+
+### Captura 8
+![Captura 8](img/Captura8.PNG)
+
+---
+
 ## Requisitos
 
 ### 1. Completar el CRUD de reservas completo para **ADMIN** y **OPERARIO** en la ruta **"/reservas"**:

@@ -5,34 +5,27 @@
 </head>
 <body>
     <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
-    
     <div class="container mt-4">
         <h2>Editar Reserva</h2>
         <form th:action="@{/admin/reservas/edit/{id}(id=${reserva.id})}" th:object="${reserva}" method="post">
             <div class="mb-3">
                 <label for="usuario" class="form-label">Usuario</label>
                 <select id="usuario" name="usuario" class="form-select" th:field="*{usuario}">
-                    <option value="" disabled>Seleccione un usuario</option>
-                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" 
-                            th:text="${usuario.username}"
+                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}" 
                             th:selected="${usuario.id == reserva.usuario.id}"></option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="instalacion" class="form-label">Instalación</label>
                 <select id="instalacion" name="instalacion" class="form-select" th:field="*{instalacion}">
-                    <option value="" disabled>Seleccione una instalación</option>
-                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" 
-                            th:text="${instalacion.nombre}"
+                    <option th:each="instalacion : ${instalaciones}" th:value="${instalacion.id}" th:text="${instalacion.nombre}" 
                             th:selected="${instalacion.id == reserva.instalacion.id}"></option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="horario" class="form-label">Horario</label>
                 <select id="horario" name="horario" class="form-select" th:field="*{horario}">
-                    <option value="" disabled>Seleccione un horario</option>
-                    <option th:each="horario : ${horarios}" th:value="${horario.id}" 
-                            th:text="${horario.horaInicio + ' - ' + horario.horaFin}"
+                    <option th:each="horario : ${horarios}" th:value="${horario.id}" th:text="${horario.horaInicio + ' - ' + horario.horaFin}" 
                             th:selected="${horario.id == reserva.horario.id}"></option>
                 </select>
             </div>
