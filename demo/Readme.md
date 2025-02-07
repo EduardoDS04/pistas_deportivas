@@ -18,28 +18,28 @@ Este documento contiene capturas de pantalla del sistema.
 ## 🖼️ Capturas del Proyecto
 
 ### Captura 1
-![Captura 1](img/Captura1.PNG)
+![Captura 1](docs/img/Captura1.PNG)
 
 ### Captura 2
-![Captura 2](img/Captura2.PNG)
+![Captura 2](docs/img/Captura2.PNG)
 
 ### Captura 3
-![Captura 3](img/Captura3.PNG)
+![Captura 3](docs/img/Captura3.PNG)
 
 ### Captura 4
-![Captura 4](img/Captura4.PNG)
+![Captura 4](docs/img/Captura4.PNG)
 
 ### Captura 5
-![Captura 5](img/Captura5.PNG)
+![Captura 5](docs/img/Captura5.PNG)
 
 ### Captura 6
-![Captura 6](img/Captura6.PNG)
+![Captura 6](docs/img/Captura6.PNG)
 
 ### Captura 7
-![Captura 7](img/Captura7.PNG)
+![Captura 7](docs/img/Captura7.PNG)
 
 ### Captura 8
-![Captura 8](img/Captura8.PNG)
+![Captura 8](docs/img/Captura8.PNG)
 
 ---
 

@@ -58,7 +58,13 @@
                                 <a class="nav-link text-white" href="/mis-datos/add">
                                     <i class="fa-solid fa-calendar-plus"></i> | Hacer una Reserva
                                 </a>
-                            </li>                            
+                            </li>
+                            <li sec:authorize="hasAuthority('USUARIO')" class="nav-item">
+                                <a class="nav-link text-white" href="/mis-datos/mis-reservas">
+                                    <i class="fa-solid fa-calendar"></i> | Ver mis Reservas
+                                </a>
+                            </li>
+                          
                             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
                                 <!-- SOLO ADMIN -->
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="usuariosDropdown" data-bs-toggle="collapse" data-bs-target="#usuariosMenu" aria-expanded="false">

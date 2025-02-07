@@ -5,7 +5,7 @@
     <div th:replace="~{plantilla/fragmentos.html :: navigation}"></div>
 
     <div class="container">
-        <h2 th:text="${titulo}">Mis Reservas</h2>
+        <h2 class="mb-4">Mis Reservas</h2>  
         
         <!-- muestra un mensaje de que se ha realizado la reserva -->
         <div th:if="${mensaje}" class="alert alert-success" role="alert">
@@ -47,22 +47,33 @@
             </tbody>
         </table>
 
-        <!-- Paginación -->
-        <nav th:if="${reservas.totalPages > 1}">
-            <ul class="pagination">
-                <li class="page-item" th:classappend="${reservas.hasPrevious()} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${reservas.number - 1})}">Anterior</a>
-                </li>
-                <li class="page-item" 
-                    th:each="page : ${#numbers.sequence(0, reservas.totalPages - 1)}"
-                    th:classappend="${page == reservas.number} ? 'active'">
-                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${page})}" th:text="${page + 1}"></a>
-                </li>
-                <li class="page-item" th:classappend="${reservas.hasNext()} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{/mis-datos/mis-reservas(page=${reservas.number + 1})}">Siguiente</a>
-                </li>
-            </ul>
-        </nav>
+         <!-- Paginación de reservas -->
+         <div>
+            <p>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <!-- Página anterior -->
+                        <li class="page-item" th:classappend="${reservas.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number - 1}, usuarioId=${usuarioId})}">
+                                <i class="fa-solid fa-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+
+                        <!-- Página actual -->
+                        <li class="page-item">
+                            <a class="page-link active" href="#">Estás en la página <span th:text="${reservas.number + 1}"></span> de <span th:text="${reservas.totalPages}"></span></a>
+                        </li>
+
+                        <!-- Página siguiente -->
+                        <li class="page-item" th:classappend="${reservas.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:href="@{/admin/reservas(page=${reservas.number + 1}, usuarioId=${usuarioId})}">
+                                Siguiente <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </p>
+        </div>
     </div>
 
     <div th:replace="~{plantilla/fragmentos.html :: footer}"></div>
